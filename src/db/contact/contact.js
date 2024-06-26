@@ -1,11 +1,3 @@
-// name - string, required
-// phoneNumber - string, required
-//! email - email, optional
-// isFavourite - boolean, default false
-// contactType - string, enum(’work’, ‘home’, ‘personal’), required, default ‘personal’
-// createdAt - дата створення (timestamps: true)
-// updatedAt - дата оновлення (timestamps: true)
-
 import { Schema, model } from 'mongoose';
 
 const constactSchema = new Schema({
@@ -18,7 +10,7 @@ const constactSchema = new Schema({
     required: true,
   },
   email: {
-    type: String, //!
+    type: String,
     optional: true,
   },
   isFavourite: {
