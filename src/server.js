@@ -22,6 +22,7 @@ export function setupServer() {
   app.use(cors());
 
   app.get('/contacts', async (req, res) => {
+    //? контролер (обробка даних)
     const data = await getContacts();
     res.json({
       status: 200,
