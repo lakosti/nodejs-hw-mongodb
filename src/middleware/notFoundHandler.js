@@ -1,5 +1,6 @@
+//якщо не знайдено такого маршруту
 const notFoundHandler = (req, res) => {
-  res.status(404).json({ message: 'Not found' });
+  res.status(404).json({ message: 'Route not found' });
 };
 
 export default notFoundHandler;
