@@ -19,6 +19,6 @@ const ctrWrapper = (controller) => {
 const contactsRouter = express.Router();
 
 contactsRouter.get('/', ctrWrapper(getContactsController));
-contactsRouter.get('/:id', ctrWrapper(getContactByIdController));
+contactsRouter.get('/:contactId', ctrWrapper(getContactByIdController));
 
 export default contactsRouter;
