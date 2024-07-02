@@ -6,7 +6,6 @@ export const getContactById = (contactId) => Contact.findById(contactId);
 
 export const createContact = (data) => Contact.create(data);
 
-//! попробувать так ні доробить
 export const updateContact = (filter, data, options = {}) =>
   Contact.findOneAndUpdate(filter, data, { new: true, ...options });
 
