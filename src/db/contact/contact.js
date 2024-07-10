@@ -1,4 +1,6 @@
 import { Schema, model } from 'mongoose';
+import { typeList } from '../../constans/constans.js';
+import { setUpdateSettings, mongooseSaveError } from './hooks.js';
 
 const constactSchema = new Schema(
   {
@@ -20,21 +22,16 @@ const constactSchema = new Schema(
     },
     contactType: {
       type: String,
-      enum: ['work', 'home', 'personal'],
-      // required: true,
+      enum: typeList,
       default: 'personal',
     },
-    // createdAt: {
-    //   type: String,
-    //   timestamps: true,
-    // },
-    // updatedAt: {
-    //   type: String,
-    //   timestamps: true,
-    // },
   },
   { versionKey: false, timestamps: true },
 );
+
+constactSchema.pre('findOneAndUpdate', setUpdateSettings);
+constactSchema.post('findOneAndUpdate', mongooseSaveError);
+constactSchema.post('save', mongooseSaveError);
 
 const Contact = model('contact', constactSchema);
 
