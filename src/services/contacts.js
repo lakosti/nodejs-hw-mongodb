@@ -4,7 +4,7 @@ import calcPages from '../utils/calcPages.js';
 export const getContacts = async ({ page = 1, perPage = 10 }) => {
   const skip = (page - 1) * perPage;
 
-  const items = await Contact.find().skip(skip).limit(perPage);
+  const data = await Contact.find().skip(skip).limit(perPage);
 
   const totalItems = await Contact.countDocuments();
 
@@ -15,10 +15,10 @@ export const getContacts = async ({ page = 1, perPage = 10 }) => {
   });
 
   return {
-    totalItems,
-    items,
+    data,
     page,
     perPage,
+    totalItems,
     totalPages,
     hasPreviousPage,
     hasNextPage,
