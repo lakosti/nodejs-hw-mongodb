@@ -1,6 +1,29 @@
 import Contact from '../db/contact/contact.js';
+import calcPages from '../utils/calcPages.js';
 
-export const getContacts = () => Contact.find();
+export const getContacts = async ({ page = 1, perPage = 10 }) => {
+  const skip = (page - 1) * perPage;
+
+  const items = await Contact.find().skip(skip).limit(perPage);
+
+  const totalItems = await Contact.countDocuments();
+
+  const { totalPages, hasPreviousPage, hasNextPage } = calcPages({
+    total: totalItems,
+    perPage,
+    page,
+  });
+
+  return {
+    totalItems,
+    items,
+    page,
+    perPage,
+    totalPages,
+    hasPreviousPage,
+    hasNextPage,
+  };
+};
 
 export const getContactById = (contactId) => Contact.findById(contactId);
 

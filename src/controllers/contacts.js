@@ -6,9 +6,15 @@ import {
   updateContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import parsePagination from '../utils/parsePagination.js';
 
 export const getContactsController = async (req, res) => {
-  const data = await getContacts();
+  const { page, perPage } = parsePagination(req.query);
+
+  const data = await getContacts({
+    page,
+    perPage,
+  });
 
   res.json({
     status: 200,
