@@ -1,11 +1,17 @@
 import Contact from '../db/contact/contact.js';
 import calcPages from '../utils/calcPages.js';
 
-export const getContacts = async ({ page = 1, perPage = 10 }) => {
+export const getContacts = async ({
+  page = 1,
+  perPage = 10,
+  sortOrder,
+  sortBy,
+}) => {
   const skip = (page - 1) * perPage;
-
-  const data = await Contact.find().skip(skip).limit(perPage);
-
+  const data = await Contact.find()
+    .skip(skip)
+    .limit(perPage)
+    .sort({ [sortBy]: sortOrder });
   const totalItems = await Contact.countDocuments();
 
   const { totalPages, hasPreviousPage, hasNextPage } = calcPages({

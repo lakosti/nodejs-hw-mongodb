@@ -7,13 +7,19 @@ import {
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
 import parsePagination from '../utils/parsePagination.js';
+import parseSortParams from '../utils/parseSortParams.js';
+import { fieldList } from '../constans/constans.js';
 
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePagination(req.query);
 
+  const { sortOrder, sortBy } = parseSortParams(req.query, fieldList);
+
   const data = await getContacts({
     page,
     perPage,
+    sortOrder,
+    sortBy,
   });
 
   res.json({
