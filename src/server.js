@@ -5,6 +5,7 @@ import env from './utils/env.js';
 import notFoundHandler from './middleware/notFoundHandler.js';
 import errorHandler from './middleware/errorHandler.js';
 import contactsRouter from './routers/contacts.js';
+import auth from './routers/auth.js';
 
 const port = env('PORT', '3000');
 
@@ -21,6 +22,7 @@ export function setupServer() {
   app.use(cors());
   app.use(express.json());
 
+  app.use('/auth', auth);
   app.use('/contacts', contactsRouter);
 
   app.use(notFoundHandler);
