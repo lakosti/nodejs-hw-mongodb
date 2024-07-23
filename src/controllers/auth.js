@@ -1,6 +1,6 @@
 import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
-import { findUser, register } from '../services/auth.js';
+import { createSession, findUser, register } from '../services/auth.js';
 
 export const registerController = async (req, res) => {
   const { email } = req.body;
@@ -39,12 +39,25 @@ export const loginController = async (req, res) => {
     throw createHttpError(401, 'Password invalid');
   }
 
-  const data = {
-    accessToken: '46848464684',
-  };
-  res.status(201).json({
-    status: 201,
+  const { _id, accessToken, refreshToken, refreshTokenValidUntil } =
+    await createSession(user._id);
+
+  res.cookie('refresh', refreshToken, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+
+  //для видалення старої сесії
+  res.cookie('sessionId', _id, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+
+  res.json({
+    status: 200,
     message: 'Successfully logged in an user!',
-    data,
+    data: {
+      accessToken,
+    },
   });
 };
