@@ -13,6 +13,7 @@ import {
   contactAddSchema,
   contactUpdateSchema,
 } from '../validation/contact-schema.js';
+import authenticate from '../middleware/authenticate.js';
 
 const ctrWrapper = (controller) => {
   const func = async (req, res, next) => {
@@ -27,7 +28,10 @@ const ctrWrapper = (controller) => {
 
 const contactsRouter = express.Router();
 
+contactsRouter.use(authenticate);
+
 contactsRouter.get('/', ctrWrapper(getContactsController));
+
 contactsRouter.get(
   '/:contactId',
   isValidId,

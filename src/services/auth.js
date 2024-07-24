@@ -7,18 +7,11 @@ import {
   REFRESH_TOKEN_LIFETIME,
 } from '../constans/constans.js';
 
-//знаходимо юзера по імейлу
-export const findUser = (filter) => User.findOne(filter);
+export const findSession = (filter) => Session.findOne(filter);
 
-//реєструємо юзера і хешуємо пароль
-export const register = async (data) => {
-  const { password } = data;
-  const hashedPassword = await hashValue(password, 10);
+export const createSession = async (userId) => {
+  await Session.deleteOne({ userId });
 
-  return User.create({ ...data, password: hashedPassword });
-};
-
-export const createSession = (userId) => {
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
 
@@ -33,3 +26,14 @@ export const createSession = (userId) => {
     refreshTokenValidUntil,
   });
 };
+
+export const findUser = (filter) => User.findOne(filter);
+//реєструємо юзера і хешуємо пароль
+export const register = async (data) => {
+  const { password } = data;
+  const hashedPassword = await hashValue(password, 10);
+
+  return User.create({ ...data, password: hashedPassword });
+};
+
+export const deleteSession = (filter) => Session.deleteOne(filter);

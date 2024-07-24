@@ -1,13 +1,11 @@
 import { typeList } from '../constans/constans.js';
 
 const parseBoolean = (value) => {
-  if (typeof value !== 'string') return undefined;
-  if (value === 'true') {
-    return true;
-  } else if (value === 'false') {
-    return false;
-  }
-  return undefined;
+  const isBoolean = value === 'true' || value === 'false';
+
+  if (!isBoolean) return;
+
+  return value === 'true' ? true : false;
 };
 
 const parseContactsFilterParams = ({ type, isFavourite }) => {

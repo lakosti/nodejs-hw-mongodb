@@ -2,17 +2,32 @@ import Contact from '../db/contact/contact.js';
 import calcPages from '../utils/calcPages.js';
 
 export const getContacts = async ({
-  page = 1,
-  perPage = 10,
-  sortOrder,
+  filter,
+  page,
+  perPage,
   sortBy,
+  sortOrder,
 }) => {
   const skip = (page - 1) * perPage;
-  const data = await Contact.find()
+
+  const contactsQuery = Contact.find();
+
+  // if (filter.userId) {
+  //   contactsQuery.where('userId').equals(filter.userId);
+  // }
+  if (filter.type) {
+    contactsQuery.where('type').equals(filter.type);
+  }
+  if (filter.isFavourite !== undefined) {
+    contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  }
+
+  const data = await contactsQuery
     .skip(skip)
     .limit(perPage)
     .sort({ [sortBy]: sortOrder });
-  const totalItems = await Contact.countDocuments();
+
+  const totalItems = await Contact.find().merge(contactsQuery).countDocuments();
 
   const { totalPages, hasPreviousPage, hasNextPage } = calcPages({
     total: totalItems,
