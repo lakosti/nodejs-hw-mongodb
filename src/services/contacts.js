@@ -2,7 +2,7 @@ import Contact from '../db/contact/contact.js';
 import calcPages from '../utils/calcPages.js';
 
 export const getContacts = async ({
-  filter,
+  filter = {},
   page,
   perPage,
   sortBy,
@@ -15,8 +15,8 @@ export const getContacts = async ({
   // if (filter.userId) {
   //   contactsQuery.where('userId').equals(filter.userId);
   // }
-  if (filter.type) {
-    contactsQuery.where('type').equals(filter.type);
+  if (filter.contactType) {
+    contactsQuery.where('type').equals(filter.contactType);
   }
   if (filter.isFavourite !== undefined) {
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
