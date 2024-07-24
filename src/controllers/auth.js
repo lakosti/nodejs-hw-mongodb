@@ -114,8 +114,5 @@ export const logoutController = async (req, res) => {
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');
 
-  res.json({
-    status: 204,
-    message: 'Successfully log out',
-  });
+  res.status(204).send();
 };
