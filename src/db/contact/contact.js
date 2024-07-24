@@ -25,6 +25,7 @@ const constactSchema = new Schema(
       enum: typeList,
       default: 'personal',
     },
+    userId: { type: String, required: true, ref: 'users' },
   },
   { versionKey: false, timestamps: true },
 );

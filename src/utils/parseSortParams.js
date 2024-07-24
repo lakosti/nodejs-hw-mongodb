@@ -3,9 +3,9 @@ import { sortedList } from '../constans/constans.js';
 const parseSortParams = ({ sortOrder, sortBy }, fieldList) => {
   const parsedSortOrder = sortedList.includes(sortOrder)
     ? sortOrder
-    : sortOrder[0];
+    : sortedList[0];
 
-  const parsedSortBy = fieldList.includes(sortBy) ? sortBy : sortBy[0];
+  const parsedSortBy = fieldList.includes(sortBy) ? sortBy : fieldList[0];
 
   return {
     sortOrder: parsedSortOrder,
