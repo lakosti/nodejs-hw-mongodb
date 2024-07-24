@@ -12,12 +12,11 @@ import { fieldList } from '../constans/constans.js';
 import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
 
 export const getContactsController = async (req, res) => {
-  // const { _id: userId } = req.user;
+  const userId = req.user._id;
 
   const { page, perPage } = parsePagination(req.query);
   const { sortOrder, sortBy } = parseSortParams(req.query, fieldList);
-  const filter = parseContactsFilterParams(req.query);
-  // const filter = { ...parseContactsFilterParams(req.query), userId };
+  const filter = { ...parseContactsFilterParams(req.query), userId };
 
   const contacts = await getContacts({
     page,
@@ -36,7 +35,8 @@ export const getContactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
-  const data = await getContactById(contactId);
+  const userId = req.user._id;
+  const data = await getContactById({ contactId, userId });
 
   console.log(data);
   if (!data) {
@@ -51,8 +51,8 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const createContactController = async (req, res) => {
-  const data = await createContact(req.body);
-  console.log(req.body);
+  const userId = req.user._id;
+  const data = await createContact({ ...req.body, userId });
 
   res.status(201).json({
     status: 201,
@@ -62,8 +62,9 @@ export const createContactController = async (req, res) => {
 };
 export const updateContactController = async (req, res) => {
   const { contactId } = req.params;
+  const userId = req.user._id;
 
-  const data = await updateContact({ _id: contactId }, req.body);
+  const data = await updateContact({ _id: contactId, userId }, req.body);
 
   if (!data) {
     throw createHttpError(404, 'Contact not found');
@@ -77,9 +78,10 @@ export const updateContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
-
+  const userId = req.user._id;
   const data = await deleteContact({
     _id: contactId,
+    userId,
   });
 
   if (!data) {

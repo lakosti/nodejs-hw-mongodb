@@ -6,6 +6,7 @@ import notFoundHandler from './middleware/notFoundHandler.js';
 import errorHandler from './middleware/errorHandler.js';
 import contactsRouter from './routers/contacts.js';
 import auth from './routers/auth.js';
+import cookieParser from 'cookie-parser';
 
 const port = env('PORT', '3000');
 
@@ -20,6 +21,7 @@ export function setupServer() {
 
   app.use(logger);
   app.use(cors());
+  app.use(cookieParser());
   app.use(express.json());
 
   app.use('/auth', auth);

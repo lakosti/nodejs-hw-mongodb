@@ -1,6 +1,27 @@
 import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
-import { createSession, findUser, register } from '../services/auth.js';
+import {
+  createSession,
+  deleteSession,
+  findSession,
+  findUser,
+  register,
+} from '../services/auth.js';
+
+const setupResponseSession = (
+  res,
+  { refreshToken, refreshTokenValidUt, _id },
+) => {
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    expires: refreshTokenValidUt,
+  });
+
+  res.cookie('sessionId', _id, {
+    httpOnly: true,
+    expires: refreshTokenValidUt,
+  });
+};
 
 export const registerController = async (req, res) => {
   const { email } = req.body;
@@ -39,25 +60,62 @@ export const loginController = async (req, res) => {
     throw createHttpError(401, 'Password invalid');
   }
 
-  const { _id, accessToken, refreshToken, refreshTokenValidUntil } =
-    await createSession(user._id);
+  const session = await createSession(user._id);
 
-  res.cookie('refresh', refreshToken, {
-    httpOnly: true,
-    expires: refreshTokenValidUntil,
-  });
-
-  //для видалення старої сесії
-  res.cookie('sessionId', _id, {
-    httpOnly: true,
-    expires: refreshTokenValidUntil,
-  });
+  setupResponseSession(res, session);
 
   res.json({
     status: 200,
     message: 'Successfully logged in an user!',
     data: {
-      accessToken,
+      accessToken: session.accessToken,
     },
+  });
+};
+
+export const refreshController = async (req, res) => {
+  const { refreshToken, sessionId } = req.cookies;
+
+  const currentSession = await findSession({ _id: sessionId, refreshToken });
+
+  if (!currentSession) {
+    throw createHttpError(401, 'Session not found');
+  }
+
+  const refreshTokenExpired =
+    new Date() > new Date(currentSession.refreshTokenValidUntil);
+
+  if (refreshTokenExpired) {
+    throw createHttpError(401, 'Session expired');
+  }
+
+  const newSession = await createSession(currentSession.userId);
+
+  setupResponseSession(res, newSession);
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully refreshed a session!',
+    data: {
+      accessToken: newSession.accessToken,
+    },
+  });
+};
+
+export const logoutController = async (req, res) => {
+  const { sessionId } = req.cookies;
+
+  if (!sessionId) {
+    throw createHttpError(401, 'User not logged in');
+  }
+
+  await deleteSession({ _id: sessionId });
+
+  res.clearCookie('sessionId');
+  res.clearCookie('refreshToken');
+
+  res.json({
+    status: 204,
+    message: 'Successfully log out',
   });
 };

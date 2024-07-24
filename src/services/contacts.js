@@ -12,9 +12,9 @@ export const getContacts = async ({
 
   const contactsQuery = Contact.find();
 
-  // if (filter.userId) {
-  //   contactsQuery.where('userId').equals(filter.userId);
-  // }
+  if (filter.userId) {
+    contactsQuery.where('userId').equals(filter.userId);
+  }
   if (filter.contactType) {
     contactsQuery.where('type').equals(filter.contactType);
   }
@@ -46,7 +46,7 @@ export const getContacts = async ({
   };
 };
 
-export const getContactById = (contactId) => Contact.findById(contactId);
+export const getContactById = (filter) => Contact.findById(filter);
 
 export const createContact = (data) => Contact.create(data);
 

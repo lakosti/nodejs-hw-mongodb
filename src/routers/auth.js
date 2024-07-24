@@ -8,7 +8,12 @@ import {
   userRegisterSchema,
 } from '../validation/user-schema.js';
 
-import { loginController, registerController } from '../controllers/auth.js';
+import {
+  loginController,
+  logoutController,
+  refreshController,
+  registerController,
+} from '../controllers/auth.js';
 
 const auth = Router();
 
@@ -18,5 +23,7 @@ auth.post(
   ctrWrapper(registerController),
 );
 auth.post('/login', validateBody(userLoginSchema), ctrWrapper(loginController));
+auth.post('/refresh', ctrWrapper(refreshController));
+auth.post('/logout', ctrWrapper(logoutController));
 
 export default auth;
