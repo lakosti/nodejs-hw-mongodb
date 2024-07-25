@@ -1,19 +1,19 @@
 import nodemailer from 'nodemailer';
 import env from '../utils/env.js';
+import { SMTP } from '../constans/constans.js';
 
-const host = env('SMTP_HOST');
-const port = env('SMTP_PORT');
-const user = env('SMTP_USER');
-const password = env('SMTP_PASSWORD');
-const emailFrom = env('SMTP_FROM');
+// const host = env('SMTP_HOST');
+// const port = env('SMTP_PORT');
+// const user = env('SMTP_USER');
+// const password = env('SMTP_PASSWORD');
+// const emailFrom = env('SMTP_FROM');
 
 const nodemailerConfig = {
-  host: host,
-  port: port,
-  secure: true,
+  host: env(SMTP.SMTP_HOST),
+  port: Number(env(SMTP.SMTP_PORT)),
   auth: {
-    user: user,
-    pass: password,
+    user: env(SMTP.SMTP_USER),
+    pass: env(SMTP.SMTP_PASSWORD),
   },
 };
 
@@ -26,13 +26,11 @@ const data = {
     html: "<strong>Test email</strong>",
 };
 */
-const sendEmail = async (data) => {
-  const email = { ...data, from: emailFrom };
-  return await transport.sendMail(email);
-};
-
-// export const sendEmail = async (data) => {
-//   return await transport.sendMail(data);
+// const sendEmail = async (data) => {
+//   const email = { ...data, from: emailFrom };
+//   return await transport.sendMail(email);
 // };
 
-export default sendEmail;
+export const sendEmail = async (data) => {
+  return await transport.sendMail(data);
+};
