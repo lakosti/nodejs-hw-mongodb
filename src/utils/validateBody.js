@@ -16,10 +16,7 @@ const validateBody = (schema) => {
   };
 };
 
-export default validateBody;
-
 ///
-// import createHttpError from 'http-errors';
 
 // export const validateBody = (schema) => async (req, res, next) => {
 //   try {
@@ -37,3 +34,4 @@ export default validateBody;
 //     next(error);
 //   }
 // };
+export default validateBody;

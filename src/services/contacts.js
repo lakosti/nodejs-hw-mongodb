@@ -50,7 +50,20 @@ export const getContactById = (filter) => Contact.findOne(filter);
 
 export const createContact = (data) => Contact.create(data);
 
-export const updateContact = (filter, data, options = {}) =>
-  Contact.findOneAndUpdate(filter, data, { new: true, ...options });
+export const updateContact = async (contactId, data = {}, userId) => {
+  const options = { new: true, includeResultMetadata: true };
 
+  const updated = await Contact.findOneAndUpdate(
+    { _id: contactId, userId },
+    data,
+    options,
+  );
+
+  if (!updated || !updated.value) return null;
+
+  return {
+    contact: updated.value,
+    isNew: Boolean(updated?.lastErrorObject?.upsert),
+  };
+};
 export const deleteContact = (filter) => Contact.findOneAndDelete(filter);

@@ -26,6 +26,7 @@ const constactSchema = new Schema(
       default: 'personal',
     },
     userId: { type: String, required: true, ref: 'user' },
+    photo: { type: String },
   },
   { versionKey: false, timestamps: true },
 );

@@ -14,6 +14,7 @@ import {
   contactUpdateSchema,
 } from '../validation/contact-schema.js';
 import authenticate from '../middleware/authenticate.js';
+import { upload } from '../middleware/multer.js';
 
 const ctrWrapper = (controller) => {
   const func = async (req, res, next) => {
@@ -39,18 +40,21 @@ contactsRouter.get(
 );
 contactsRouter.post(
   '/',
+  upload.single('photo'),
   validateBody(contactAddSchema),
   ctrWrapper(createContactController),
 );
 contactsRouter.patch(
   '/:contactId',
   isValidId,
+  upload.single('photo'),
   validateBody(contactUpdateSchema),
   ctrWrapper(updateContactController),
 );
 contactsRouter.delete(
   '/:contactId',
   isValidId,
+  upload.single('photo'),
   ctrWrapper(deleteContactController),
 );
 
