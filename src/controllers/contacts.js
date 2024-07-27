@@ -90,11 +90,14 @@ export const updateContactController = async (req, res) => {
     }
   }
 
-  const data = await updateContact(contactId, {
-    ...req.body,
-    photo: photoUrl,
+  const data = await updateContact(
+    contactId,
+    {
+      ...req.body,
+      photo: photoUrl,
+    },
     userId,
-  });
+  );
 
   if (!data) {
     throw createHttpError(404, 'Contact not found');
