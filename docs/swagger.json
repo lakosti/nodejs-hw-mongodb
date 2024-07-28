@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
+      "url": "https://nodejs-hw-mongodb-yl1p.onrender.com",
       "description": "Production server"
     }
   ],
@@ -71,30 +71,6 @@
                 "desc"
               ],
               "example": "asc"
-            }
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string",
-              "example": "Joe"
-            }
-          },
-          {
-            "in": "query",
-            "name": "phoneNumber",
-            "schema": {
-              "type": "string",
-              "example": "+380111111111"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string",
-              "example": "sobaka@gmail.com"
             }
           },
           {
