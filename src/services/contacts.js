@@ -61,9 +61,6 @@ export const updateContact = async (contactId, data = {}, userId) => {
 
   if (!updated || !updated.value) return null;
 
-  return {
-    contact: updated.value,
-    isNew: Boolean(updated?.lastErrorObject?.upsert),
-  };
+  return updated.value;
 };
 export const deleteContact = (filter) => Contact.findOneAndDelete(filter);
